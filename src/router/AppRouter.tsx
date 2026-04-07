@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
+import AdminRoute from './AdminRoute'
 import ProtectedLayout from '../components/ProtectedLayout'
 import LoginPage from '../features/auth/pages/LoginPage'
 import RegisterPage from '../features/auth/pages/RegisterPage'
@@ -10,6 +11,7 @@ import ProjectPage from '../features/project/pages/ProjectPage'
 import StackPage from '../features/stack/pages/StackPage'
 import LanguagePage from '../features/language/pages/LanguagePage'
 import UserPage from '../features/user/pages/UserPage'
+import UsersAdminPage from '../features/user/pages/UsersAdminPage'
 
 function RootRedirect() {
   const { isAuthenticated } = useAuth()
@@ -37,6 +39,14 @@ export default function AppRouter() {
         <Route path="/languages" element={<LanguagePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/profile" element={<UserPage />} />
+        <Route
+          path="/users"
+          element={
+            <AdminRoute>
+              <UsersAdminPage />
+            </AdminRoute>
+          }
+        />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
