@@ -12,7 +12,6 @@ function extractArray<T>(data: unknown): T[] {
   return (nested as T[]) ?? []
 }
 
-/** GET /stack — all catalog stacks, optional name filter */
 export async function getAllStacks(name?: string): Promise<StackItem[]> {
   const params: Record<string, unknown> = { ...PAGE }
   if (name) params.name = name
@@ -20,20 +19,40 @@ export async function getAllStacks(name?: string): Promise<StackItem[]> {
   return extractArray<StackItem>(data)
 }
 
-/** GET /stack/user/{user_id} — stacks assigned to a specific user */
 export async function getUserStacks(userId: string): Promise<UserStackResponse[]> {
   const { data } = await api.get(`/stack/user/${userId}`, { params: PAGE })
   return extractArray<UserStackResponse>(data)
 }
 
-/** POST /stack — create catalog stack (admin) */
+export async function getUserStack(userId: string, stackId: string): Promise<UserStackResponse> {
+  const { data } = await api.get<UserStackResponse>(`/stack/user/${userId}/${stackId}`)
+  return data
+}
+
 export async function createStack(dto: CreateStackDto): Promise<MessageResponse> {
   const { data } = await api.post<MessageResponse>('/stack', dto)
   return data
 }
 
-/** POST /stack/user — assign a stack to a user */
+
 export async function assignStack(dto: AssignStackDto): Promise<MessageResponse> {
   const { data } = await api.post<MessageResponse>('/stack/user', dto)
+  return data
+}
+
+export async function updateStack(id: string, dto: { name: string }): Promise<MessageResponse> {
+  const { data } = await api.patch<MessageResponse>(`/stack/${id}`, dto)
+  return data
+}
+
+
+export async function toggleStackStatus(stackId: string): Promise<MessageResponse> {
+  const { data } = await api.patch<MessageResponse>(`/stack/${stackId}/status`)
+  return data
+}
+
+
+export async function toggleUserStackStatus(userId: string, stackId: string): Promise<MessageResponse> {
+  const { data } = await api.patch<MessageResponse>(`/stack/user/${userId}/${stackId}/status`)
   return data
 }
