@@ -7,3 +7,12 @@ export async function getUsers(): Promise<UserWithRole[]> {
   const nested = Object.values(data as Record<string, unknown>).find(Array.isArray)
   return (nested as UserWithRole[]) ?? []
 }
+
+export async function toggleUserStatus(id: string): Promise<void> {
+  await api.patch(`/users/${id}/status`)
+  console.log(id)
+}
+
+export async function updateUserRole(id: string, rol: string): Promise<void> {
+  await api.patch(`/users/${id}/rol`, null, { params: { rol } })
+}

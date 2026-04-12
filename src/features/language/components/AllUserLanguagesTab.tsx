@@ -1,0 +1,93 @@
+import { useState } from 'react'
+import { useAuth } from '../../../context/AuthContext'
+import { useAllUserLanguages } from '../hooks/useAllUserLanguages'
+import LanguageCard from './LanguageCard'
+
+function SearchIcon() {
+  return (
+    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+    </svg>
+  )
+}
+
+export default function AllUserLanguagesTab() {
+  const { user } = useAuth()
+  const isAdmin = user?.rol === 'admin'
+
+  const { entries, isLoading, toggleStatus } = useAllUserLanguages()
+  const [search, setSearch] = useState('')
+
+  const filtered = search
+    ? entries.filter(({ user: u }) =>
+        `${u.name} ${u.last_name1} ${u.last_name2}`.toLowerCase().includes(search.toLowerCase())
+      )
+    : entries
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <svg className="animate-spin text-violet-400" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+        </svg>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="relative max-w-sm">
+        <SearchIcon />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Buscar por usuario…"
+          className="w-full pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
+        />
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
+          <p className="text-zinc-300 font-medium">{search ? 'Sin resultados' : 'Ningún usuario registrado'}</p>
+          {search && <p className="text-zinc-500 text-sm">No hay usuarios con "{search}".</p>}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-6">
+          {filtered.map(({ user: u, languages }) => (
+            <div key={u.id} className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
+                  <span className="text-white text-xs font-semibold">{u.name[0].toUpperCase()}</span>
+                </div>
+                <div>
+                  <p className="text-white font-medium text-sm">{u.name} {u.last_name1} {u.last_name2}</p>
+                  <p className="text-zinc-500 text-xs">{u.email}</p>
+                </div>
+                <span className="ml-auto text-xs text-zinc-500 shrink-0">
+                  {languages.length} idioma{languages.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+
+              {languages.length === 0 ? (
+                <p className="text-zinc-600 text-sm pl-11">Sin idiomas asignados.</p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pl-11">
+                  {languages.map((l) => (
+                    <LanguageCard
+                      key={l.language_id}
+                      item={l}
+                      onToggleStatus={isAdmin ? () => toggleStatus.mutate({ userId: u.id, languageId: l.language_id }) : undefined}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div className="border-b border-zinc-800/60" />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

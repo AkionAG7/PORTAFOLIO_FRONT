@@ -6,4 +6,6 @@ export interface UserWithRole {
   email: string
   phone_number?: string
   rol: string
+  status?: boolean
+  user_image?: string
 }
