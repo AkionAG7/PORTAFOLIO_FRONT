@@ -174,17 +174,6 @@ export default function UsersAdminPage() {
                             >
                               Ver
                             </button>
-                            <button
-                              onClick={() => handleToggle(u)}
-                              disabled={togglingId === u.id}
-                              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors border disabled:opacity-50 disabled:cursor-not-allowed ${
-                                isActive
-                                  ? 'text-red-400 bg-red-500/10 border-red-500/20 hover:bg-red-500/20'
-                                  : 'text-green-400 bg-green-500/10 border-green-500/20 hover:bg-green-500/20'
-                              }`}
-                            >
-                              {togglingId === u.id ? '...' : isActive ? 'Deshabilitar' : 'Habilitar'}
-                            </button>
                           </div>
                         </td>
                       </tr>
@@ -197,7 +186,6 @@ export default function UsersAdminPage() {
             {/* Mobile cards */}
             <div className="flex flex-col gap-3 sm:hidden">
               {filtered.map((u) => {
-                const isActive = u.status ?? true
                 return (
                   <div key={u.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
                     <div className="flex items-center gap-4">
@@ -216,17 +204,6 @@ export default function UsersAdminPage() {
                         className="flex-1 py-2 text-xs font-medium text-zinc-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors border border-zinc-700"
                       >
                         Ver detalles
-                      </button>
-                      <button
-                        onClick={() => handleToggle(u)}
-                        disabled={togglingId === u.id}
-                        className={`flex-1 py-2 text-xs font-medium rounded-lg transition-colors border disabled:opacity-50 ${
-                          isActive
-                            ? 'text-red-400 bg-red-500/10 border-red-500/20 hover:bg-red-500/20'
-                            : 'text-green-400 bg-green-500/10 border-green-500/20 hover:bg-green-500/20'
-                        }`}
-                      >
-                        {togglingId === u.id ? '...' : isActive ? 'Deshabilitar' : 'Habilitar'}
                       </button>
                     </div>
                   </div>

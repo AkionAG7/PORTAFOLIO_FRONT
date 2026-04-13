@@ -1,6 +1,12 @@
 import type { UserWithRole } from '../interfaces/user.interfaces'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 const ROLES = ['admin', 'user'] as const
+
+const roleActiveStyle: Record<string, string> = {
+  admin: 'bg-violet-500/15 text-violet-400 border-violet-500/20',
+  user:  'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
+}
 
 interface Props {
   user: UserWithRole
@@ -12,7 +18,9 @@ interface Props {
 }
 
 export default function UserDetailModal({ user, onClose, onToggleStatus, onRoleChange, isToggling, isChangingRole }: Props) {
+  const { user: currentUser } = useAuth()
   const isActive = user.status ?? true
+  const isOwnAccount = currentUser?.id === user.id
 
   const rows = [
     { label: 'ID', value: user.id },
@@ -81,9 +89,7 @@ export default function UserDetailModal({ user, onClose, onToggleStatus, onRoleC
                   disabled={isChangingRole || isCurrentRole}
                   className={`flex-1 py-2 text-xs font-medium rounded-xl border transition-colors disabled:cursor-not-allowed ${
                     isCurrentRole
-                      ? role === 'admin'
-                        ? 'bg-violet-500/15 text-violet-400 border-violet-500/20'
-                        : 'bg-zinc-700/60 text-zinc-300 border-zinc-600/40'
+                      ? roleActiveStyle[role] ?? roleActiveStyle['user']
                       : 'text-zinc-400 bg-zinc-800 border-zinc-700 hover:bg-zinc-700 hover:text-zinc-200'
                   }`}
                 >
@@ -97,14 +103,23 @@ export default function UserDetailModal({ user, onClose, onToggleStatus, onRoleC
         {/* Toggle status */}
         <button
           onClick={() => onToggleStatus(user)}
-          disabled={isToggling}
+          disabled={isToggling || isOwnAccount}
+          title={isOwnAccount ? 'No puedes deshabilitar tu propia cuenta' : undefined}
           className={`w-full py-2.5 rounded-xl text-sm font-medium transition-colors border disabled:opacity-50 disabled:cursor-not-allowed ${
-            isActive
-              ? 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20'
-              : 'bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20'
+            isOwnAccount
+              ? 'bg-zinc-800 text-zinc-500 border-zinc-700'
+              : isActive
+                ? 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20'
+                : 'bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20'
           }`}
         >
-          {isToggling ? 'Procesando...' : isActive ? 'Deshabilitar usuario' : 'Habilitar usuario'}
+          {isOwnAccount
+            ? 'No puedes deshabilitar tu propia cuenta'
+            : isToggling
+              ? 'Procesando...'
+              : isActive
+                ? 'Deshabilitar usuario'
+                : 'Habilitar usuario'}
         </button>
 
       </div>

@@ -65,7 +65,9 @@ export default function LoginPage() {
           ? (err.response as { status: number }).status
           : null
 
-      if (status === 401) {
+      if (status === 403) {
+        setError('Tu cuenta está deshabilitada. Contacta al administrador.')
+      } else if (status === 401) {
         setError('Correo o contraseña incorrectos.')
       } else {
         setError('Error al conectar con el servidor. Intenta de nuevo.')
