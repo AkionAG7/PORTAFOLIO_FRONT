@@ -33,6 +33,7 @@ export default function EditProjectModal({ item, onClose, onSaved, onAddImages, 
   const [deployLink, setDeployLink] = useState(item.deploy_link ?? '')
   const [newFiles, setNewFiles] = useState<File[]>([])
   const [newPreviews, setNewPreviews] = useState<string[]>([])
+  const [currentImages, setCurrentImages] = useState<string[]>(item.image_link ?? [])
   const [removingUrl, setRemovingUrl] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [isUploadingImages, setIsUploadingImages] = useState(false)
@@ -56,6 +57,7 @@ export default function EditProjectModal({ item, onClose, onSaved, onAddImages, 
     setRemovingUrl(url)
     try {
       await onRemoveImage(url)
+      setCurrentImages((prev) => prev.filter((img) => img !== url))
     } finally {
       setRemovingUrl(null)
     }
@@ -142,11 +144,11 @@ export default function EditProjectModal({ item, onClose, onSaved, onAddImages, 
           </div>
 
           {/* Existing images */}
-          {(item.image_link?.length ?? 0) > 0 && (
+          {currentImages.length > 0 && (
             <div className="flex flex-col gap-2">
               <span className="text-sm font-medium text-zinc-300">Imágenes actuales</span>
               <div className="flex flex-wrap gap-2">
-                {item.image_link!.map((url) => (
+                {currentImages.map((url) => (
                   <div key={url} className="relative group/img w-20 h-20 rounded-xl overflow-hidden border border-zinc-700 shrink-0">
                     <img src={url} alt="" className="w-full h-full object-cover" />
                     <button
