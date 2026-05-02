@@ -2,23 +2,38 @@ import { useState } from 'react'
 import { useMyContacts } from '../hooks/useMyContacts'
 import ContactCard from './ContactCard'
 import CreateContactModal from './CreateContactModal'
+import EditContactModal from './EditContactModal'
 import type { CreateContactDto } from '../dtos/create-contact.dto'
+import type { UpdateContactDto } from '../dtos/update-contact.dto'
+import type { ContactItem } from '../interfaces/contact.interfaces'
 
 export default function MyContactsTab() {
-  const { items, isLoading, create, remove } = useMyContacts()
+  const { items, isLoading, create, update, toggleStatus } = useMyContacts()
   const [showCreate, setShowCreate] = useState(false)
+  const [editingItem, setEditingItem] = useState<ContactItem | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
 
   async function handleCreated(dto: CreateContactDto) {
     await create.mutateAsync(dto)
   }
 
-  async function handleDelete(contactId: string) {
+  async function handleSaved(dto: UpdateContactDto) {
+    if (!editingItem) return
     setActionError(null)
     try {
-      await remove.mutateAsync(contactId)
+      await update.mutateAsync({ id: editingItem.id, userId: editingItem.user_id, dto })
     } catch {
-      setActionError('Error al eliminar el contacto. Intenta de nuevo.')
+      setActionError('Error al actualizar el contacto. Intenta de nuevo.')
+      throw new Error('update failed')
+    }
+  }
+
+  async function handleToggleStatus(contactId: string) {
+    setActionError(null)
+    try {
+      await toggleStatus.mutateAsync(contactId)
+    } catch {
+      setActionError('Error al cambiar el estado. Intenta de nuevo.')
     }
   }
 
@@ -71,8 +86,9 @@ export default function MyContactsTab() {
               <ContactCard
                 key={item.id}
                 item={item}
-                onDelete={() => handleDelete(item.id)}
-                isDeleting={remove.isPending && remove.variables === item.id}
+                onToggleStatus={() => handleToggleStatus(item.id)}
+                onEdit={() => setEditingItem(item)}
+                isTogglingStatus={toggleStatus.isPending && toggleStatus.variables === item.id}
               />
             ))}
           </div>
@@ -83,6 +99,14 @@ export default function MyContactsTab() {
         <CreateContactModal
           onClose={() => setShowCreate(false)}
           onCreated={handleCreated}
+        />
+      )}
+
+      {editingItem && (
+        <EditContactModal
+          item={editingItem}
+          onClose={() => setEditingItem(null)}
+          onSaved={handleSaved}
         />
       )}
     </>

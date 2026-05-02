@@ -1,6 +1,7 @@
 import api from '../../../lib/api'
 import type { ContactItem } from '../interfaces/contact.interfaces'
 import type { CreateContactDto } from '../dtos/create-contact.dto'
+import type { UpdateContactDto } from '../dtos/update-contact.dto'
 import type { MessageResponse } from '../../auth/interfaces/auth.interfaces'
 
 function extractArray<T>(data: unknown): T[] {
@@ -21,7 +22,7 @@ function isNotFound(err: unknown): boolean {
 
 export async function getUserContacts(userId: string): Promise<ContactItem[]> {
   try {
-    const { data } = await api.get(`/Contact/user/${userId}`)
+    const { data } = await api.get(`/Contact/${userId}/user`)
     return extractArray<ContactItem>(data)
   } catch (err) {
     if (isNotFound(err)) return []
@@ -35,6 +36,26 @@ export async function createContact(userId: string, dto: CreateContactDto): Prom
   formData.append('link', dto.link)
   if (dto.image) formData.append('file', dto.image)
   const { data } = await api.post<MessageResponse>(`/Contact/${userId}`, formData)
+  return data
+}
+
+export async function updateContact(contactId: string, dto: UpdateContactDto): Promise<MessageResponse> {
+  const { data } = await api.patch<MessageResponse>(`/Contact/${contactId}`, {
+    name: dto.name,
+    link: dto.link,
+  })
+  return data
+}
+
+export async function updateContactImage(contactId: string, userId: string, image: File): Promise<MessageResponse> {
+  const formData = new FormData()
+  formData.append('file', image)
+  const { data } = await api.patch<MessageResponse>(`/Contact/${contactId}/${userId}/image`, formData)
+  return data
+}
+
+export async function toggleContactStatus(contactId: string): Promise<MessageResponse> {
+  const { data } = await api.patch<MessageResponse>(`/Contact/${contactId}/status`)
   return data
 }
 

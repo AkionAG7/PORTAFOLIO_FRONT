@@ -4,4 +4,5 @@ export interface ContactItem {
   link: string
   image?: string
   user_id: string
+  status?: boolean
 }
