@@ -43,8 +43,8 @@ export default function StackPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Stack tecnológico</h1>
-            <p className="mt-1 text-zinc-400 text-sm">Administra las tecnologías de tu portafolio.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Stack tecnológico</h1>
+            <p className="mt-1 text-gray-500 dark:text-zinc-400 text-sm">Administra las tecnologías de tu portafolio.</p>
           </div>
 
           {/* Action buttons */}
@@ -62,7 +62,7 @@ export default function StackPage() {
             )}
             <button
               onClick={() => setShowAssignSelf(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 text-zinc-200 text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 border border-gray-300 dark:border-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600 text-gray-700 dark:text-zinc-200 text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14" /><path d="M12 5v14" />
@@ -74,7 +74,7 @@ export default function StackPage() {
 
         {/* Tab bar — only when admin (has more than one tab) */}
         {visibleTabs.length > 1 && (
-          <div className="flex gap-1 p-1 bg-zinc-900 border border-zinc-800 rounded-xl w-fit flex-wrap">
+          <div className="flex gap-1 p-1 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl w-fit flex-wrap">
             {visibleTabs.map((tab) => (
               <button
                 key={tab.id}
@@ -82,7 +82,7 @@ export default function StackPage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer
                   ${active === tab.id
                     ? 'bg-violet-600 text-white shadow shadow-violet-500/30'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
+                    : 'text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                   }`}
               >
                 {tab.label}

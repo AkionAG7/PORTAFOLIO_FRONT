@@ -5,7 +5,7 @@ import LanguageCard from './LanguageCard'
 
 function SearchIcon() {
   return (
-    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
     </svg>
   )
@@ -43,14 +43,14 @@ export default function AllUserLanguagesTab() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar por usuario…"
-          className="w-full pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
+          className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
         />
       </div>
 
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
-          <p className="text-zinc-300 font-medium">{search ? 'Sin resultados' : 'Ningún usuario registrado'}</p>
-          {search && <p className="text-zinc-500 text-sm">No hay usuarios con "{search}".</p>}
+        <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
+          <p className="text-gray-700 dark:text-zinc-300 font-medium">{search ? 'Sin resultados' : 'Ningún usuario registrado'}</p>
+          {search && <p className="text-gray-400 dark:text-zinc-500 text-sm">No hay usuarios con "{search}".</p>}
         </div>
       ) : (
         <div className="flex flex-col gap-6">
@@ -61,16 +61,16 @@ export default function AllUserLanguagesTab() {
                   <span className="text-white text-xs font-semibold">{u.name[0].toUpperCase()}</span>
                 </div>
                 <div>
-                  <p className="text-white font-medium text-sm">{u.name} {u.last_name1} {u.last_name2}</p>
-                  <p className="text-zinc-500 text-xs">{u.email}</p>
+                  <p className="text-gray-900 dark:text-white font-medium text-sm">{u.name} {u.last_name1} {u.last_name2}</p>
+                  <p className="text-gray-400 dark:text-zinc-500 text-xs">{u.email}</p>
                 </div>
-                <span className="ml-auto text-xs text-zinc-500 shrink-0">
+                <span className="ml-auto text-xs text-gray-400 dark:text-zinc-500 shrink-0">
                   {languages.length} idioma{languages.length !== 1 ? 's' : ''}
                 </span>
               </div>
 
               {languages.length === 0 ? (
-                <p className="text-zinc-600 text-sm pl-11">Sin idiomas asignados.</p>
+                <p className="text-gray-400 dark:text-zinc-600 text-sm pl-11">Sin idiomas asignados.</p>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pl-11">
                   {languages.map((l) => (
@@ -83,7 +83,7 @@ export default function AllUserLanguagesTab() {
                 </div>
               )}
 
-              <div className="border-b border-zinc-800/60" />
+              <div className="border-b border-gray-200 dark:border-zinc-800/60" />
             </div>
           ))}
         </div>

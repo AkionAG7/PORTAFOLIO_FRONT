@@ -78,7 +78,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex">
       {/* ── Left decorative panel ── */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-violet-950 via-purple-950 to-zinc-950 flex-col items-center justify-center px-16">
         {/* Ambient blobs */}
@@ -124,12 +124,12 @@ export default function LoginPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
               <span className="text-white font-bold">P</span>
             </div>
-            <span className="text-white font-semibold text-lg">Portfolio Manager</span>
+            <span className="text-gray-900 dark:text-white font-semibold text-lg">Portfolio Manager</span>
           </div>
 
           {/* Heading */}
-          <h2 className="text-3xl font-bold text-white tracking-tight">Bienvenido de vuelta</h2>
-          <p className="mt-2 text-zinc-400">Ingresa tus credenciales para continuar</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Bienvenido de vuelta</h2>
+          <p className="mt-2 text-gray-500 dark:text-zinc-400">Ingresa tus credenciales para continuar</p>
 
           {/* Success banner after register */}
           {justRegistered && (
@@ -142,7 +142,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5" noValidate>
             {/* Email */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium text-zinc-300">
+              <label htmlFor="email" className="text-sm font-medium text-gray-600 dark:text-zinc-300">
                 Correo electrónico
               </label>
               <input
@@ -153,13 +153,13 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@email.com"
-                className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200"
+                className="w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200"
               />
             </div>
 
             {/* Password */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-sm font-medium text-zinc-300">
+              <label htmlFor="password" className="text-sm font-medium text-gray-600 dark:text-zinc-300">
                 Contraseña
               </label>
               <div className="relative">
@@ -171,12 +171,12 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-12 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200"
+                  className="w-full px-4 py-3 pr-12 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors p-1"
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
                   <EyeIcon open={showPassword} />
@@ -209,8 +209,8 @@ export default function LoginPage() {
           </form>
 
           {/* Divider */}
-          <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
-            <p className="text-zinc-500 text-sm">
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-zinc-800 text-center">
+            <p className="text-gray-400 dark:text-zinc-500 text-sm">
               ¿No tienes cuenta?{' '}
               <Link to="/register" className="text-violet-400 hover:text-violet-300 transition-colors">
                 Regístrate

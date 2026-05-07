@@ -33,7 +33,7 @@ const features = [
 ]
 
 const inputClass =
-  'w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200'
+  'w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -102,7 +102,7 @@ export default function RegisterPage() {
   const isDisabled = isLoading || !name || !last_name1 || !last_name2 || !email || !phone_number || !password || !confirmPassword
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex">
       {/* ── Left decorative panel ── */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-violet-950 via-purple-950 to-zinc-950 flex-col items-center justify-center px-16">
         <div className="absolute top-1/4 -left-12 w-80 h-80 bg-violet-600/25 rounded-full blur-3xl pointer-events-none" />
@@ -144,16 +144,16 @@ export default function RegisterPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
               <span className="text-white font-bold">P</span>
             </div>
-            <span className="text-white font-semibold text-lg">Portfolio Manager</span>
+            <span className="text-gray-900 dark:text-white font-semibold text-lg">Portfolio Manager</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-white tracking-tight">Crear cuenta</h2>
-          <p className="mt-2 text-zinc-400">Completa tus datos para registrarte</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Crear cuenta</h2>
+          <p className="mt-2 text-gray-500 dark:text-zinc-400">Completa tus datos para registrarte</p>
 
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5" noValidate>
             {/* Name */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="name" className="text-sm font-medium text-zinc-300">Nombre</label>
+              <label htmlFor="name" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Nombre</label>
               <input id="name" name="name" type="text" autoComplete="given-name" required
                 value={form.name} onChange={handleChange} placeholder="Juan"
                 className={inputClass} />
@@ -162,13 +162,13 @@ export default function RegisterPage() {
             {/* Last names — side by side */}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <label htmlFor="last_name1" className="text-sm font-medium text-zinc-300">Primer apellido</label>
+                <label htmlFor="last_name1" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Primer apellido</label>
                 <input id="last_name1" name="last_name1" type="text" autoComplete="family-name" required
                   value={form.last_name1} onChange={handleChange} placeholder="García"
                   className={inputClass} />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="last_name2" className="text-sm font-medium text-zinc-300">Segundo apellido</label>
+                <label htmlFor="last_name2" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Segundo apellido</label>
                 <input id="last_name2" name="last_name2" type="text" autoComplete="additional-name" required
                   value={form.last_name2} onChange={handleChange} placeholder="López"
                   className={inputClass} />
@@ -177,7 +177,7 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium text-zinc-300">Correo electrónico</label>
+              <label htmlFor="email" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Correo electrónico</label>
               <input id="email" name="email" type="email" autoComplete="email" required
                 value={form.email} onChange={handleChange} placeholder="tu@email.com"
                 className={inputClass} />
@@ -185,7 +185,7 @@ export default function RegisterPage() {
 
             {/* Phone */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="phone_number" className="text-sm font-medium text-zinc-300">Teléfono</label>
+              <label htmlFor="phone_number" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Teléfono</label>
               <input id="phone_number" name="phone_number" type="tel" autoComplete="tel" required
                 value={form.phone_number} onChange={handleChange} placeholder="+52 55 0000 0000"
                 className={inputClass} />
@@ -193,14 +193,14 @@ export default function RegisterPage() {
 
             {/* Password */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-sm font-medium text-zinc-300">Contraseña</label>
+              <label htmlFor="password" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Contraseña</label>
               <div className="relative">
                 <input id="password" name="password" type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password" required value={form.password} onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-12 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200" />
+                  className="w-full px-4 py-3 pr-12 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200" />
                 <button type="button" onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors p-1"
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}>
                   <EyeIcon open={showPassword} />
                 </button>
@@ -209,14 +209,14 @@ export default function RegisterPage() {
 
             {/* Confirm password */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium text-zinc-300">Confirmar contraseña</label>
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Confirmar contraseña</label>
               <div className="relative">
                 <input id="confirmPassword" name="confirmPassword" type={showConfirm ? 'text' : 'password'}
                   autoComplete="new-password" required value={form.confirmPassword} onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-12 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200" />
+                  className="w-full px-4 py-3 pr-12 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200" />
                 <button type="button" onClick={() => setShowConfirm((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors p-1"
                   aria-label={showConfirm ? 'Ocultar contraseña' : 'Mostrar contraseña'}>
                   <EyeIcon open={showConfirm} />
                 </button>
@@ -244,8 +244,8 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
-            <p className="text-zinc-500 text-sm">
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-zinc-800 text-center">
+            <p className="text-gray-400 dark:text-zinc-500 text-sm">
               ¿Ya tienes cuenta?{' '}
               <Link to="/login" className="text-violet-400 hover:text-violet-300 transition-colors">
                 Inicia sesión

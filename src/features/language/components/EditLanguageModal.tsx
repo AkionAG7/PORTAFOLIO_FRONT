@@ -43,10 +43,10 @@ export default function EditLanguageModal({ initialName, initialLevel, onClose, 
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl flex flex-col" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-800">
-          <h2 className="text-white font-semibold text-lg">Editar idioma</h2>
-          <button onClick={onClose} className="text-zinc-500 hover:text-zinc-200 transition-colors p-1 rounded-lg hover:bg-zinc-800" aria-label="Cerrar">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-2xl flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-zinc-800">
+          <h2 className="text-gray-900 dark:text-white font-semibold text-lg">Editar idioma</h2>
+          <button onClick={onClose} className="text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-200 transition-colors p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6 6 18" /><path d="m6 6 12 12" />
             </svg>
@@ -55,9 +55,9 @@ export default function EditLanguageModal({ initialName, initialLevel, onClose, 
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 px-6 py-6">
           <div className="flex flex-col gap-2">
-            <label htmlFor="edit-lang-name" className="text-sm font-medium text-zinc-300">Nombre</label>
+            <label htmlFor="edit-lang-name" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Nombre</label>
             {userMode ? (
-              <div className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-xl text-zinc-400 text-sm">
+              <div className="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border border-gray-300/50 dark:border-zinc-700/50 rounded-xl text-gray-500 dark:text-zinc-400 text-sm">
                 {name}
               </div>
             ) : (
@@ -68,20 +68,20 @@ export default function EditLanguageModal({ initialName, initialLevel, onClose, 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Español, Inglés, Francés…"
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
+                className="w-full px-4 py-3 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
               />
             )}
           </div>
 
           {userMode && (
             <div className="flex flex-col gap-2">
-              <label htmlFor="edit-lang-level" className="text-sm font-medium text-zinc-300">Nivel</label>
+              <label htmlFor="edit-lang-level" className="text-sm font-medium text-gray-600 dark:text-zinc-300">Nivel</label>
               <select
                 id="edit-lang-level"
                 required
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
+                className="w-full px-4 py-2.5 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
               >
                 <option value="" disabled>Selecciona un nivel…</option>
                 <option value="Básico">Básico</option>
@@ -98,7 +98,7 @@ export default function EditLanguageModal({ initialName, initialLevel, onClose, 
 
           <div className="flex gap-3">
             <button type="button" onClick={onClose}
-              className="flex-1 py-2.5 px-4 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600 text-sm font-medium rounded-xl transition-all duration-200">
+              className="flex-1 py-2.5 px-4 border border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-zinc-600 text-sm font-medium rounded-xl transition-all duration-200">
               Cancelar
             </button>
             <button type="submit" disabled={isLoading || !name.trim() || unchanged || (userMode && !level)}

@@ -5,7 +5,7 @@ import UserDetailModal from '../components/UserDetailModal'
 
 const roleBadge: Record<string, string> = {
   admin: 'bg-violet-500/15 text-violet-400 border-violet-500/20',
-  user:  'bg-zinc-700/60 text-zinc-300 border-zinc-600/40',
+  user:  'bg-gray-200/60 dark:bg-zinc-700/60 text-gray-700 dark:text-zinc-300 border-gray-300/40 dark:border-zinc-600/40',
 }
 
 function UserAvatar({ user, size }: { user: UserWithRole; size: 'sm' | 'md' }) {
@@ -40,7 +40,7 @@ export default function UsersAdminPage() {
   const q = query.toLowerCase().trim()
   const filtered = q
     ? users.filter(u => {
-        const fullName = `${u.name} ${u.last_name1} ${u.last_name2}`.toLowerCase()
+        const fullName = `${u.name} ${u.last_name1} ${u.last_name2 ?? ''}`.toLowerCase()
         return fullName.includes(q) || u.email.toLowerCase().includes(q)
       })
     : users
@@ -84,8 +84,8 @@ export default function UsersAdminPage() {
       <div className="flex flex-col gap-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Usuarios</h1>
-          <p className="mt-1 text-zinc-400 text-sm">Todos los usuarios registrados en el sistema.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Usuarios</h1>
+          <p className="mt-1 text-gray-500 dark:text-zinc-400 text-sm">Todos los usuarios registrados en el sistema.</p>
         </div>
 
         {/* Error banner */}
@@ -99,7 +99,7 @@ export default function UsersAdminPage() {
         {/* Search */}
         {!isLoading && users.length > 0 && (
           <div className="relative">
-            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 pointer-events-none" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
             </svg>
             <input
@@ -107,7 +107,7 @@ export default function UsersAdminPage() {
               placeholder="Buscar por nombre o correo..."
               value={query}
               onChange={e => setQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-violet-500/50 transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-violet-500/50 transition-colors"
             />
           </div>
         )}
@@ -119,39 +119,39 @@ export default function UsersAdminPage() {
             </svg>
           </div>
         ) : users.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
-            <p className="text-zinc-300 font-medium">No hay usuarios registrados</p>
+          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
+            <p className="text-gray-700 dark:text-zinc-300 font-medium">No hay usuarios registrados</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
-            <p className="text-zinc-300 font-medium">Sin resultados para &ldquo;{query}&rdquo;</p>
+          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
+            <p className="text-gray-700 dark:text-zinc-300 font-medium">Sin resultados para &ldquo;{query}&rdquo;</p>
           </div>
         ) : (
           <>
             {/* Desktop table */}
-            <div className="hidden sm:block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+            <div className="hidden sm:block bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800">
-                    <th className="text-left text-zinc-500 font-medium px-5 py-3">Usuario</th>
-                    <th className="text-left text-zinc-500 font-medium px-5 py-3">Correo</th>
-                    <th className="text-left text-zinc-500 font-medium px-5 py-3">Rol</th>
-                    <th className="text-left text-zinc-500 font-medium px-5 py-3">Estado</th>
+                  <tr className="border-b border-gray-200 dark:border-zinc-800">
+                    <th className="text-left text-gray-400 dark:text-zinc-500 font-medium px-5 py-3">Usuario</th>
+                    <th className="text-left text-gray-400 dark:text-zinc-500 font-medium px-5 py-3">Correo</th>
+                    <th className="text-left text-gray-400 dark:text-zinc-500 font-medium px-5 py-3">Rol</th>
+                    <th className="text-left text-gray-400 dark:text-zinc-500 font-medium px-5 py-3">Estado</th>
                     <th className="px-5 py-3" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800">
+                <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                   {filtered.map((u) => {
                     const isActive = u.status ?? true
                     return (
-                      <tr key={u.id} className="hover:bg-zinc-800/40 transition-colors">
+                      <tr key={u.id} className="hover:bg-gray-100 dark:hover:bg-zinc-800/40 transition-colors">
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
                             <UserAvatar user={u} size="sm" />
-                            <span className="text-white font-medium">{u.name} {u.last_name1} {u.last_name2}</span>
+                            <span className="text-gray-900 dark:text-white font-medium">{u.name} {u.last_name1} {u.last_name2}</span>
                           </div>
                         </td>
-                        <td className="px-5 py-3.5 text-zinc-400">{u.email}</td>
+                        <td className="px-5 py-3.5 text-gray-500 dark:text-zinc-400">{u.email}</td>
                         <td className="px-5 py-3.5">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${roleBadge[u.rol] ?? roleBadge['user']}`}>
                             {u.rol}
@@ -161,7 +161,7 @@ export default function UsersAdminPage() {
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
                             isActive
                               ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                              : 'bg-zinc-700/60 text-zinc-500 border-zinc-600/40'
+                              : 'bg-gray-200/60 dark:bg-zinc-700/60 text-gray-400 dark:text-zinc-500 border-gray-300/40 dark:border-zinc-600/40'
                           }`}>
                             {isActive ? 'Activo' : 'Inactivo'}
                           </span>
@@ -170,7 +170,7 @@ export default function UsersAdminPage() {
                           <div className="flex items-center gap-2 justify-end">
                             <button
                               onClick={() => setSelectedUser(u)}
-                              className="px-3 py-1.5 text-xs font-medium text-zinc-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors border border-zinc-700"
+                              className="px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-zinc-300 bg-gray-200 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-lg transition-colors border border-gray-300 dark:border-zinc-700"
                             >
                               Ver
                             </button>
@@ -187,12 +187,12 @@ export default function UsersAdminPage() {
             <div className="flex flex-col gap-3 sm:hidden">
               {filtered.map((u) => {
                 return (
-                  <div key={u.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
+                  <div key={u.id} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
                     <div className="flex items-center gap-4">
                       <UserAvatar user={u} size="md" />
                       <div className="min-w-0 flex-1">
-                        <p className="text-white font-medium text-sm truncate">{u.name} {u.last_name1} {u.last_name2}</p>
-                        <p className="text-zinc-500 text-xs truncate">{u.email}</p>
+                        <p className="text-gray-900 dark:text-white font-medium text-sm truncate">{u.name} {u.last_name1} {u.last_name2}</p>
+                        <p className="text-gray-400 dark:text-zinc-500 text-xs truncate">{u.email}</p>
                       </div>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shrink-0 ${roleBadge[u.rol] ?? roleBadge['user']}`}>
                         {u.rol}
@@ -201,7 +201,7 @@ export default function UsersAdminPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setSelectedUser(u)}
-                        className="flex-1 py-2 text-xs font-medium text-zinc-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors border border-zinc-700"
+                        className="flex-1 py-2 text-xs font-medium text-gray-600 dark:text-zinc-300 bg-gray-200 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-lg transition-colors border border-gray-300 dark:border-zinc-700"
                       >
                         Ver detalles
                       </button>

@@ -6,7 +6,7 @@ import EditLanguageModal from './EditLanguageModal'
 
 function SearchIcon() {
   return (
-    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
     </svg>
   )
@@ -41,20 +41,20 @@ export default function MyLanguagesTab() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nombre…"
-            className="w-full pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
+            className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200 text-sm"
           />
         </div>
 
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
-            <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-600">
+          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
+            <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 dark:text-zinc-600">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m5 8 6 6" /><path d="m4 14 6-6 2-3" /><path d="M2 5h12" /><path d="M7 2h1" /><path d="m22 22-5-10-5 10" /><path d="M14 18h6" />
               </svg>
             </div>
             <div className="text-center">
-              <p className="text-zinc-300 font-medium">{search ? 'Sin resultados' : 'Sin idiomas asignados'}</p>
-              <p className="text-zinc-500 text-sm mt-1">
+              <p className="text-gray-700 dark:text-zinc-300 font-medium">{search ? 'Sin resultados' : 'Sin idiomas asignados'}</p>
+              <p className="text-gray-400 dark:text-zinc-500 text-sm mt-1">
                 {search ? `No hay idiomas con "${search}".` : 'Usa "Agregar a mis Idiomas" para añadir idiomas.'}
               </p>
             </div>

@@ -85,7 +85,7 @@ export default function ProjectCard({ item, onToggleStatus, onEdit, isTogglingSt
   }
 
   return (
-    <div className={`group flex flex-col bg-zinc-900 border rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5 ${isActive ? 'border-zinc-800 hover:border-zinc-700' : 'border-zinc-800/50 opacity-60 hover:opacity-80'}`}>
+    <div className={`group flex flex-col bg-white dark:bg-zinc-900 border rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5 ${isActive ? 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700' : 'border-gray-200/50 dark:border-zinc-800/50 opacity-60 hover:opacity-80'}`}>
 
       {/* Cover / Carousel */}
       <div className="relative h-44 w-full shrink-0 overflow-hidden bg-gradient-to-br from-violet-900/40 via-zinc-800 to-purple-900/30">
@@ -145,15 +145,15 @@ export default function ProjectCard({ item, onToggleStatus, onEdit, isTogglingSt
       {/* Body */}
       <div className="flex flex-col gap-3 p-5 flex-1">
         <div className="flex flex-col gap-1">
-          <h3 className="text-white font-semibold text-base leading-snug">{item.name}</h3>
-          <p className="text-zinc-400 text-sm leading-relaxed line-clamp-2">{item.description}</p>
+          <h3 className="text-gray-900 dark:text-white font-semibold text-base leading-snug">{item.name}</h3>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm leading-relaxed line-clamp-2">{item.description}</p>
         </div>
 
         {(item.repository_link || item.deploy_link) && (
           <div className="flex items-center gap-2 mt-auto pt-1">
             {item.repository_link && (
               <a href={item.repository_link} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs font-medium transition-colors">
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-600 dark:text-zinc-300 hover:text-gray-900 dark:hover:text-white text-xs font-medium transition-colors">
                 <GithubIcon />Repositorio
               </a>
             )}
@@ -168,14 +168,14 @@ export default function ProjectCard({ item, onToggleStatus, onEdit, isTogglingSt
       </div>
 
       {/* Action bar */}
-      <div className="flex border-t border-zinc-800">
+      <div className="flex border-t border-gray-200 dark:border-zinc-800">
         <button onClick={onToggleStatus} disabled={isTogglingStatus} title={isActive ? 'Desactivar' : 'Activar'}
-          className="flex-1 flex items-center justify-center gap-2 py-3 text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-medium border-r border-zinc-800">
+          className="flex-1 flex items-center justify-center gap-2 py-3 text-gray-500 dark:text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-medium border-r border-gray-200 dark:border-zinc-800">
           {isActive ? <EyeOffIcon /> : <EyeOnIcon />}
           {isActive ? 'Desactivar' : 'Activar'}
         </button>
         <button onClick={onEdit} title="Editar"
-          className="flex-1 flex items-center justify-center gap-2 py-3 text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 text-xs font-medium">
+          className="flex-1 flex items-center justify-center gap-2 py-3 text-gray-500 dark:text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 text-xs font-medium">
           <EditIcon />Editar
         </button>
       </div>

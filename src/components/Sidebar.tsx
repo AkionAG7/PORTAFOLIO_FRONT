@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useTheme } from '../context/ThemeContext'
+import { getUser } from '../features/user/services/userService'
 
 interface Props {
   open: boolean
@@ -96,7 +99,16 @@ const navItems: NavItem[] = [
 
 export default function Sidebar({ open, onClose }: Props) {
   const { user, logout } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const isAdmin = user?.rol === 'admin'
+  const [displayName, setDisplayName] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!user?.id) return
+    getUser(user.id)
+      .then(p => setDisplayName(`${p.name} ${p.last_name1}`))
+      .catch(() => {})
+  }, [user?.id])
 
   const visibleItems = navItems.filter((item) => !item.adminOnly || isAdmin)
 
@@ -112,16 +124,16 @@ export default function Sidebar({ open, onClose }: Props) {
 
       {/* Drawer */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-zinc-900 border-r border-zinc-800 z-40 flex flex-col transition-transform duration-300 ease-in-out
+        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 z-40 flex flex-col transition-transform duration-300 ease-in-out
           ${open ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 lg:static lg:z-auto`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-5 border-b border-zinc-800">
+        <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-200 dark:border-zinc-800">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow shadow-violet-500/30 shrink-0">
             <span className="text-white font-bold text-sm">P</span>
           </div>
-          <span className="text-white font-semibold text-sm">Portfolio Manager</span>
+          <span className="text-gray-900 dark:text-white font-semibold text-sm">Portfolio Manager</span>
         </div>
 
         {/* Nav */}
@@ -136,7 +148,7 @@ export default function Sidebar({ open, onClose }: Props) {
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150
                 ${isActive
                   ? 'bg-violet-600/20 text-violet-400 border border-violet-500/20'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
+                  : 'text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                 }`
               }
             >
@@ -147,18 +159,38 @@ export default function Sidebar({ open, onClose }: Props) {
         </nav>
 
         {/* User + logout */}
-        <div className="px-3 py-4 border-t border-zinc-800 flex flex-col gap-2">
-          <div className="px-3 py-2 rounded-xl bg-zinc-800/60 flex items-center gap-3">
+        <div className="px-3 py-4 border-t border-gray-200 dark:border-zinc-800 flex flex-col gap-2">
+          <div className="px-3 py-2 rounded-xl bg-gray-100 dark:bg-zinc-800/60 flex items-center gap-3">
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
               <span className="text-white text-xs font-semibold">
-                {user?.email?.[0]?.toUpperCase() ?? 'U'}
+                {(displayName ?? user?.email ?? 'U')[0].toUpperCase()}
               </span>
             </div>
-            <span className="text-zinc-300 text-xs truncate">{user?.email}</span>
+            <span className="text-gray-600 dark:text-zinc-300 text-xs truncate">{displayName ?? user?.email}</span>
           </div>
           <button
+            onClick={toggleTheme}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all duration-150 w-full"
+          >
+            {theme === 'dark' ? (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                </svg>
+                Modo claro
+              </>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                </svg>
+                Modo oscuro
+              </>
+            )}
+          </button>
+          <button
             onClick={logout}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-150 w-full"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 dark:text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-150 w-full"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

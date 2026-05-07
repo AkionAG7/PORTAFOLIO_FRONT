@@ -30,10 +30,10 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
           Hello, <span className="text-violet-400">{user?.email?.split('@')[0]}</span>
         </h1>
-        <p className="mt-1 text-zinc-400 text-sm sm:text-base">
+        <p className="mt-1 text-gray-500 dark:text-zinc-400 text-sm sm:text-base">
           Bienvenido a tu panel de gestión de portafolio.
         </p>
       </div>
@@ -43,14 +43,14 @@ export default function DashboardPage() {
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-5 flex flex-col gap-3"
+            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 sm:p-5 flex flex-col gap-3"
           >
             <div className="w-9 h-9 rounded-xl bg-violet-600/15 text-violet-400 flex items-center justify-center">
               {card.icon}
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{card.value}</p>
-              <p className="text-xs text-zinc-500 mt-0.5">{card.label}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-500 mt-0.5">{card.label}</p>
             </div>
           </div>
         ))}

@@ -47,8 +47,8 @@ export default function ProjectPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Proyectos</h1>
-            <p className="mt-1 text-zinc-400 text-sm">Gestiona tus proyectos de portafolio.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Proyectos</h1>
+            <p className="mt-1 text-gray-500 dark:text-zinc-400 text-sm">Gestiona tus proyectos de portafolio.</p>
           </div>
           <button
             onClick={() => setShowCreate(true)}
@@ -77,15 +77,15 @@ export default function ProjectPage() {
             </svg>
           </div>
         ) : items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
-            <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-600">
+          <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
+            <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 dark:text-zinc-600">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect width="20" height="14" x="2" y="7" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
               </svg>
             </div>
             <div className="text-center">
-              <p className="text-zinc-300 font-medium">Sin proyectos aún</p>
-              <p className="text-zinc-500 text-sm mt-1">Crea tu primer proyecto para comenzar.</p>
+              <p className="text-gray-700 dark:text-zinc-300 font-medium">Sin proyectos aún</p>
+              <p className="text-gray-400 dark:text-zinc-500 text-sm mt-1">Crea tu primer proyecto para comenzar.</p>
             </div>
           </div>
         ) : (

@@ -48,7 +48,7 @@ export default function ContactCard({ item, onToggleStatus, onEdit, isTogglingSt
   const isActive = item.status !== false
 
   return (
-    <div className={`group relative bg-zinc-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5 ${isActive ? 'border-zinc-800 hover:border-zinc-700' : 'border-zinc-800/50 opacity-60 hover:opacity-80'}`}>
+    <div className={`group relative bg-white dark:bg-zinc-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5 ${isActive ? 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700' : 'border-gray-200/50 dark:border-zinc-800/50 opacity-60 hover:opacity-80'}`}>
       {/* Top accent bar */}
       <div className="h-1 w-full bg-gradient-to-r from-violet-600 to-purple-500" />
 
@@ -67,7 +67,7 @@ export default function ContactCard({ item, onToggleStatus, onEdit, isTogglingSt
 
         {/* Info */}
         <div className="flex flex-col items-center gap-1.5 w-full min-w-0">
-          <p className="text-white font-semibold text-base truncate w-full text-center">{item.name}</p>
+          <p className="text-gray-900 dark:text-white font-semibold text-base truncate w-full text-center">{item.name}</p>
           <a
             href={item.link}
             target="_blank"
@@ -80,19 +80,19 @@ export default function ContactCard({ item, onToggleStatus, onEdit, isTogglingSt
         </div>
 
         {/* Status badge */}
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-zinc-800 text-zinc-500 border border-zinc-700'}`}>
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-500 border border-gray-300 dark:border-zinc-700'}`}>
           <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-emerald-400' : 'bg-zinc-500'}`} />
           {isActive ? 'Activo' : 'Inactivo'}
         </span>
       </div>
 
       {/* Action bar */}
-      <div className="flex border-t border-zinc-800">
+      <div className="flex border-t border-gray-200 dark:border-zinc-800">
         <button
           onClick={onToggleStatus}
           disabled={isTogglingStatus}
           title={isActive ? 'Desactivar' : 'Activar'}
-          className="flex-1 flex items-center justify-center gap-2 py-3 text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-medium border-r border-zinc-800"
+          className="flex-1 flex items-center justify-center gap-2 py-3 text-gray-500 dark:text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-medium border-r border-gray-200 dark:border-zinc-800"
         >
           {isActive ? <EyeOffIcon /> : <EyeOnIcon />}
           {isActive ? 'Desactivar' : 'Activar'}
@@ -100,7 +100,7 @@ export default function ContactCard({ item, onToggleStatus, onEdit, isTogglingSt
         <button
           onClick={onEdit}
           title="Editar"
-          className="flex-1 flex items-center justify-center gap-2 py-3 text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 text-xs font-medium"
+          className="flex-1 flex items-center justify-center gap-2 py-3 text-gray-500 dark:text-zinc-400 hover:text-violet-300 hover:bg-violet-500/5 transition-colors duration-150 text-xs font-medium"
         >
           <EditIcon />
           Editar

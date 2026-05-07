@@ -43,7 +43,7 @@ export default function StackCard({ item, onEdit, onToggleStatus }: Props) {
   const { name, status } = normalize(item)
 
   return (
-    <div className={`bg-zinc-900 border rounded-2xl p-4 flex items-center gap-4 transition-colors duration-200 ${status ? 'border-zinc-800 hover:border-zinc-700' : 'border-zinc-800/50'}`}>
+    <div className={`bg-white dark:bg-zinc-900 border rounded-2xl p-4 flex items-center gap-4 transition-colors duration-200 ${status ? 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700' : 'border-gray-200/50 dark:border-zinc-800/50'}`}>
       {/* Icon + name dimmed when inactive */}
       <div className={`flex items-center gap-4 flex-1 min-w-0 transition-opacity duration-200 ${status ? '' : 'opacity-50'}`}>
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600/30 to-purple-600/30 border border-violet-500/20 flex items-center justify-center shrink-0">
@@ -54,7 +54,7 @@ export default function StackCard({ item, onEdit, onToggleStatus }: Props) {
 
         {/* Name + status badge */}
         <div className="flex flex-col min-w-0 flex-1">
-          <p className="text-white font-semibold text-sm truncate">{name}</p>
+          <p className="text-gray-900 dark:text-white font-semibold text-sm truncate">{name}</p>
           <div className="flex items-center gap-1.5 mt-0.5">
             <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${status ? 'bg-emerald-400' : 'bg-zinc-500'}`} />
             <span className={`text-xs ${status ? 'text-emerald-400' : 'text-zinc-500'}`}>
@@ -72,7 +72,7 @@ export default function StackCard({ item, onEdit, onToggleStatus }: Props) {
               onClick={onEdit}
               disabled={!status}
               title={status ? 'Editar' : 'Activa el stack para editar'}
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-violet-400 hover:bg-violet-500/10 transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-zinc-500 disabled:hover:bg-transparent"
+              className="p-1.5 rounded-lg text-gray-400 dark:text-zinc-500 hover:text-violet-400 hover:bg-violet-500/10 transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-gray-400 dark:disabled:hover:text-zinc-500 disabled:hover:bg-transparent"
             >
               <EditIcon />
             </button>
@@ -83,8 +83,8 @@ export default function StackCard({ item, onEdit, onToggleStatus }: Props) {
               title={status ? 'Desactivar' : 'Activar'}
               className={`p-1.5 rounded-lg transition-colors duration-150 ${
                 status
-                  ? 'text-zinc-500 hover:text-red-400 hover:bg-red-500/10'
-                  : 'text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10'
+                  ? 'text-gray-400 dark:text-zinc-500 hover:text-red-400 hover:bg-red-500/10'
+                  : 'text-gray-400 dark:text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10'
               }`}
             >
               {status ? <DeactivateIcon /> : <ActivateIcon />}
