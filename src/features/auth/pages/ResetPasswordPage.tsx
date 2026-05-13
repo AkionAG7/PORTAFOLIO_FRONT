@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
-import { login as loginService } from '../services/authService'
-import { useAuth } from '../hooks/useAuth'
+import { useSearchParams, useNavigate, Link } from 'react-router-dom'
+import { resetPassword } from '../services/authService'
 
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
@@ -33,63 +32,85 @@ const features = [
   { icon: '◉', text: 'Controla tus contactos y redes' },
 ]
 
-export default function LoginPage() {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { login } = useAuth()
-  const justRegistered = (location.state as { registered?: boolean; passwordReset?: boolean } | null)?.registered === true
-  const passwordReset = (location.state as { registered?: boolean; passwordReset?: boolean } | null)?.passwordReset === true
+const inputClass =
+  'w-full px-4 py-3 pr-12 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200'
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
+export default function ResetPasswordPage() {
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const token = searchParams.get('token') ?? ''
+
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showNew, setShowNew] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  if (!token) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex items-center justify-center px-6">
+        <div className="w-full max-w-md text-center">
+          <p className="text-red-400 text-sm mb-4">El enlace de restablecimiento no es válido o ha caducado.</p>
+          <Link to="/login" className="text-violet-400 hover:text-violet-300 transition-colors text-sm">
+            Volver al inicio de sesión
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
+
+    if (newPassword !== confirmPassword) {
+      setError('Las contraseñas no coinciden.')
+      return
+    }
+
     setIsLoading(true)
 
     try {
-      const { access_token } = await loginService({ email, password })
-      login(access_token)
-      navigate('/dashboard')
+      await resetPassword({ token, new_password: newPassword })
+      navigate('/login', { state: { passwordReset: true } })
     } catch (err: unknown) {
-      const status =
+      const detail =
         err &&
         typeof err === 'object' &&
         'response' in err &&
         err.response &&
         typeof err.response === 'object' &&
-        'status' in err.response
-          ? (err.response as { status: number }).status
+        'data' in err.response &&
+        err.response.data &&
+        typeof err.response.data === 'object' &&
+        'detail' in err.response.data
+          ? String((err.response.data as { detail: unknown }).detail)
           : null
 
-      if (status === 403) {
-        setError('Tu cuenta está deshabilitada. Contacta al administrador.')
-      } else if (status === 401) {
-        setError('Correo o contraseña incorrectos.')
+      if (detail === 'Reset token has expired') {
+        setError('El enlace ha caducado. Solicita uno nuevo.')
+      } else if (detail === 'Invalid reset token') {
+        setError('El enlace no es válido.')
       } else {
-        setError('Error al conectar con el servidor. Intenta de nuevo.')
+        setError('Error al restablecer la contraseña. Intenta de nuevo.')
       }
     } finally {
       setIsLoading(false)
     }
   }
 
+  const isDisabled = isLoading || !newPassword || !confirmPassword
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex">
-      {/* ── Left decorative panel ── */}
+      {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-violet-950 via-purple-950 to-zinc-950 flex-col items-center justify-center px-16">
-        {/* Ambient blobs */}
         <div className="absolute top-1/4 -left-12 w-80 h-80 bg-violet-600/25 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/3 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-2/3 left-1/3 w-48 h-48 bg-indigo-600/15 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Content */}
         <div className="relative z-10 flex flex-col items-start gap-8 max-w-sm">
-          {/* Logo mark */}
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
             <span className="text-white text-2xl font-bold tracking-tight">P</span>
           </div>
@@ -113,11 +134,10 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Bottom gradient line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent" />
       </div>
 
-      {/* ── Right form panel ── */}
+      {/* Right form panel */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
@@ -128,102 +148,90 @@ export default function LoginPage() {
             <span className="text-gray-900 dark:text-white font-semibold text-lg">Portfolio Manager</span>
           </div>
 
-          {/* Heading */}
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Bienvenido de vuelta</h2>
-          <p className="mt-2 text-gray-500 dark:text-zinc-400">Ingresa tus credenciales para continuar</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Nueva contraseña</h2>
+          <p className="mt-2 text-gray-500 dark:text-zinc-400">Elige una contraseña segura para tu cuenta.</p>
 
-          {justRegistered && (
-            <div className="mt-6 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
-              Cuenta creada correctamente. Inicia sesión para continuar.
-            </div>
-          )}
-          {passwordReset && (
-            <div className="mt-6 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
-              Contraseña actualizada correctamente. Inicia sesión con tu nueva contraseña.
-            </div>
-          )}
-
-          {/* Form */}
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5" noValidate>
-            {/* Email */}
+            {/* New password */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-600 dark:text-zinc-300">
-                Correo electrónico
+              <label htmlFor="newPassword" className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                Nueva contraseña
               </label>
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="tu@email.com"
-                className="w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200"
-              />
-            </div>
-
-            {/* Password */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-sm font-medium text-gray-600 dark:text-zinc-300">
-                  Contraseña
-                </label>
-                <Link to="/forgot-password" className="text-xs text-violet-400 hover:text-violet-300 transition-colors">
-                  ¿Olvidaste tu contraseña?
-                </Link>
-              </div>
               <div className="relative">
                 <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
+                  id="newPassword"
+                  type={showNew ? 'text' : 'password'}
+                  autoComplete="new-password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-12 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all duration-200"
+                  className={inputClass}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword((v) => !v)}
+                  onClick={() => setShowNew((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors p-1"
-                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  aria-label={showNew ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
-                  <EyeIcon open={showPassword} />
+                  <EyeIcon open={showNew} />
                 </button>
               </div>
             </div>
 
-            {/* Error message */}
+            {/* Confirm password */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                Confirmar contraseña
+              </label>
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  type={showConfirm ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className={inputClass}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors p-1"
+                  aria-label={showConfirm ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                >
+                  <EyeIcon open={showConfirm} />
+                </button>
+              </div>
+            </div>
+
             {error && (
               <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                 {error}
               </div>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
-              disabled={isLoading || !email || !password}
+              disabled={isDisabled}
               className="mt-1 w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-violet-500/20 cursor-pointer"
             >
               {isLoading ? (
                 <>
                   <Spinner />
-                  Iniciando sesión…
+                  Guardando…
                 </>
               ) : (
-                'Iniciar sesión'
+                'Guardar contraseña'
               )}
             </button>
           </form>
 
-          {/* Divider */}
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-zinc-800 text-center">
             <p className="text-gray-400 dark:text-zinc-500 text-sm">
-              ¿No tienes cuenta?{' '}
-              <Link to="/register" className="text-violet-400 hover:text-violet-300 transition-colors">
-                Regístrate
+              <Link to="/login" className="text-violet-400 hover:text-violet-300 transition-colors">
+                Volver al inicio de sesión
               </Link>
             </p>
           </div>

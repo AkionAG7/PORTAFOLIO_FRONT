@@ -5,6 +5,8 @@ import AdminRoute from './AdminRoute'
 import ProtectedLayout from '../components/ProtectedLayout'
 import LoginPage from '../features/auth/pages/LoginPage'
 import RegisterPage from '../features/auth/pages/RegisterPage'
+import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage'
+import ResetPasswordPage from '../features/auth/pages/ResetPasswordPage'
 import DashboardPage from '../features/dashboard/pages/DashboardPage'
 import ContactPage from '../features/contact/pages/ContactPage'
 import ProjectPage from '../features/project/pages/ProjectPage'
@@ -24,6 +26,8 @@ export default function AppRouter() {
       <Route path="/" element={<RootRedirect />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       {/* Protected area */}
       <Route
